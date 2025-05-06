@@ -1,18 +1,13 @@
 REPORT:
 
-You have invested $ 100.0 with an annual interest rate of 2.0% for 10 year(s).
+You have invested $ 5000.0 with an annual interest rate of 2.0% for 5 year(s).
 
 The number of compounding periods per year you have specified is 4 (quarterly compounding).
 
 Year   Investment Value ($, rounded to nearest cent)
-0             100.00
-1             102.02
-2             104.07
-3             106.17
-4             108.31
-5             110.49
-6             112.72
-7             114.99
-8             117.30
-9             119.67
-10             122.08
+0            5000.00
+1            5100.75
+2            5203.54
+3            5308.39
+4            5415.36
+5            5524.48
