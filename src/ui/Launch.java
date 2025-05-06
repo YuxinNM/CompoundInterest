@@ -70,22 +70,22 @@ public class Launch {
             }
         }
         while (numNotEntered||principal<0);
-        double principalToCent=Math.round(principal*100.0)/100.0;                       //Round the principal value the user entered to cent.
+        double principalToCent = Math.round(principal*100.0)/100.0;                       //Round the principal value the user entered to cent.
         System.out.print("\n");
         
         
         //Prompt the user to enter the annual interest rate.
-        double annualInterestPercent=0.0;
-        numNotEntered=true;                                                             //Reset the boolean value to ensure the loop run properly.
+        double annualInterestPercent = 0.0;
+        numNotEntered = true;                                                             //Reset the boolean value to ensure the loop run properly.
         //Continuously prompt the user to enter a number, until a number in correct form is actaully entered.
         do{
             //Contains the code (parseDouble()) that could throw an exception as the program is running
             try{
                 System.out.print("Enter the annual interest rate percentage (%, where 0<rate<100): ");
-                inputStr= theScanner.nextLine();
-                annualInterestPercent=Double.parseDouble(inputStr);
+                inputStr = theScanner.nextLine();
+                annualInterestPercent = Double.parseDouble(inputStr);
 
-                numNotEntered=false;
+                numNotEntered = false;
             }
             //Catches and deals with the exception that could be thrown.
             catch(NumberFormatException e){
