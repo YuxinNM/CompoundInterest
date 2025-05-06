@@ -23,9 +23,9 @@ public class Launch {
         numNotEntered = true;
         numNotInt = true;
 
-        askQues();
-        getValues();
         getChoice();
+        getValues();
+        getCompoundingType();
 
         
         if (choice == 1) {
@@ -39,7 +39,7 @@ public class Launch {
         }
     }
 
-    private void askQues() {
+    private void getChoice() {
         //Continuously prompt the user to enter a number, until an expected choice number is actaully entered.
         do{
             //Contains the code (parseInt()) that could throw an exception as the program is running
@@ -113,7 +113,7 @@ public class Launch {
     }
 
 
-    private void getChoice() {
+    private void getCompoundingType() {
          //Prompt the user to choose the compounding type.
          int compoundingType=0;
          numNotEntered=true;                                                             //Reset the boolean value to ensure the loop run properly.
