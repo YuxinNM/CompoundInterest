@@ -13,7 +13,6 @@ public class Launch {
 
     protected boolean numNotEntered;
     protected boolean numNotInt;
-   
 
     public Launch() {
         theScanner = new Scanner(System.in);
@@ -27,8 +26,6 @@ public class Launch {
         getChoice();
         getValues();
         getCompoundingType();
-
-        new Calc(); 
     }
 
     private void getChoice() {
@@ -104,7 +101,6 @@ public class Launch {
         System.out.print("\n");
     }
 
-
     private void getCompoundingType() {
          //Prompt the user to choose the compounding type.
          compoundingType=0;
@@ -137,4 +133,5 @@ public class Launch {
          System.out.print("\n");
          
     }
+
 }

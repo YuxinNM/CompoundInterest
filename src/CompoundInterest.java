@@ -6,10 +6,12 @@
  * @version June,18,2021
  */
 
+import ui.Calc;
 import ui.Launch;
 
 public class CompoundInterest{
     public static void main(String[] args){
         new Launch();
+        new Calc(); 
     }
 }

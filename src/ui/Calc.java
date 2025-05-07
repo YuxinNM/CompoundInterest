@@ -9,7 +9,17 @@ public class Calc extends Launch{
     private String lineOfText;
 
     public Calc() {
+        try {
+            outputFile = new FileWriter("investgrowth.txt");
+        } catch (IOException e) {
+            System.out.println("IO problem - investgrowth.txt could not be created.");
+        }
+        buffWr = new BufferedWriter(outputFile);
+        lineOfText = null;
+
+        System.out.println("reached for debugging");
         if (choice == 1) {
+
             //If the user chose choice 1 (calculate the value of the user's investment each year over a time horizon) at the begining, 
             //the following if condition will be true and the code will run within the if block.
             calcHorizon();
@@ -19,13 +29,7 @@ public class Calc extends Launch{
             reachTarget();
         }
 
-        try {
-            outputFile = new FileWriter("investgrowth.txt");
-        } catch (IOException e) {
-            System.out.println("IO problem - investgrowth.txt could not be created.");
-        }
-        buffWr = new BufferedWriter(outputFile);
-        lineOfText = null;
+        
     }
 
     private void calcHorizon() {
@@ -100,259 +104,262 @@ public class Calc extends Launch{
 
     private void reachTarget() {
         //Prompt the user to enter their target value.
-            double targetValue=0.0;
-            numNotEntered=true;                                                            //Reset the boolean value to ensure the loop run properly.
-            //Continuously prompt the user to enter a number, until a number in correct form is actaully entered.
-            do{
-                //Contains the code (parseDouble()) that could throw an exception as the program is running
-                try{
-                    System.out.print("Enter your target value ($, non-negative) (will round to cent while calculating): ");
-                    inputStr = theScanner.nextLine();
-                    targetValue = Double.parseDouble(inputStr);
-                    numNotEntered=false;
-                }
-                //Catches and deals with the exception that could be thrown.
-                catch(NumberFormatException e){
-                    System.out.println("\nYOU NEED TO ENTER A NUMBER.\n");
-                }
-            }
-            while(numNotEntered||targetValue<0);
-            double targetValueToCent=Math.round(targetValue*100.0)/100.0;                  //Round the target value the user entered to cent.
-            System.out.print("\n");
-            
-        
-            double amountOfInvestment=0.0;                                                 //Initialize this variable for storing each year's investment value later on.
-            int numOfInterestEarned=0;                                                     //Compounding type(the number of times interest is earned and compounded per year).
-            int i=1;
+        double targetValueToCent= getTarget();
+        double amountOfInvestment=0.0;                                                 //Initialize this variable for storing each year's investment value later on.
+        int numOfInterestEarned=0;                                                     //Compounding type(the number of times interest is earned and compounded per year).
+        int i=1;
 
-            //Calculate the investment value depending on the compound type that user specified.
-            //Calculate the value until it reaches the target value, output to the user, and save the report to a text named investgrowth.txt.
-            if(compoundingType==1){
-                numOfInterestEarned=1;
-                try{
-                    FileWriter outputFile=new FileWriter("investgrowth.txt");
-                    BufferedWriter buffWr=new BufferedWriter(outputFile);
-                    String lineOfText = null;
-                    
-                    System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
-                    
-                    lineOfText="REPORT:\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+        //Calculate the investment value depending on the compound type that user specified.
+        //Calculate the value until it reaches the target value, output to the user, and save the report to a text named investgrowth.txt.
+        if(compoundingType==1){
+            numOfInterestEarned=1;
+            try{
+                FileWriter outputFile=new FileWriter("investgrowth.txt");
+                BufferedWriter buffWr=new BufferedWriter(outputFile);
+                String lineOfText = null;
                 
-                    lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The number of compounding periods per year you have specified is 1 (annual compounding).\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+                System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
                 
-                    lineOfText="Year   Investment Value ($, rounded to nearest cent)";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="0"+String.format("%17.2f",principalToCent);
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+                lineOfText="REPORT:\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
                 
-                    while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
-                        amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
-                        lineOfText=i+String.format("%17.2f",amountOfInvestment);
-                        System.out.println(lineOfText);
-                        buffWr.write(lineOfText, 0, lineOfText.length());
-                        buffWr.newLine();
-                        i++;
-                    }
-                    
-                    buffWr.close();
-                    outputFile.close();
+                lineOfText="The number of compounding periods per year you have specified is 1 (annual compounding).\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                lineOfText="Year   Investment Value ($, rounded to nearest cent)";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="0"+String.format("%17.2f",principalToCent);
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
+                    amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
+                    lineOfText=i+String.format("%17.2f",amountOfInvestment);
+                    System.out.println(lineOfText);
+                    buffWr.write(lineOfText, 0, lineOfText.length());
+                    buffWr.newLine();
+                    i++;
                 }
-                catch(IOException e){
-                    System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
-                }
+                
+                buffWr.close();
+                outputFile.close();
             }
-            
-            else if(compoundingType==2){
-                numOfInterestEarned=2;
-                try{
-                    FileWriter outputFile=new FileWriter("investgrowth.txt");
-                    BufferedWriter buffWr=new BufferedWriter(outputFile);
-                    String lineOfText = null;
-                    
-                    System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
-                    
-                    lineOfText="REPORT:\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                
-                    lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The number of compounding periods per year you have specified is 2 (semi-annual compounding).\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                
-                    lineOfText="Year   Investment Value ($, rounded to nearest cent)";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="0"+String.format("%18.2f",principalToCent);
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                
-                    while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
-                        amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
-                        lineOfText=i+String.format("%18.2f",amountOfInvestment);
-                        System.out.println(lineOfText);
-                        buffWr.write(lineOfText, 0, lineOfText.length());
-                        buffWr.newLine();
-                        i++;
-                    }
-                    
-                    buffWr.close();
-                    outputFile.close();
-                }
-            
-                catch(IOException e){
-                    System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
-                }
+            catch(IOException e){
+                System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
             }
+        }
+        
+        else if(compoundingType==2){
+            numOfInterestEarned=2;
+            try{
+                FileWriter outputFile=new FileWriter("investgrowth.txt");
+                BufferedWriter buffWr=new BufferedWriter(outputFile);
+                String lineOfText = null;
+                
+                System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
+                
+                lineOfText="REPORT:\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
             
-            else if(compoundingType==3){
-                numOfInterestEarned=4;
-                try{
-                    FileWriter outputFile=new FileWriter("investgrowth.txt");
-                    BufferedWriter buffWr=new BufferedWriter(outputFile);
-                    String lineOfText = null;
-                    
-                    System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
-                    
-                    lineOfText="REPORT:\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+                lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
                 
-                    lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The number of compounding periods per year you have specified is 4 (quarterly compounding).\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+                lineOfText="The number of compounding periods per year you have specified is 2 (semi-annual compounding).\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
                 
-                    lineOfText="Year   Investment Value ($, rounded to nearest cent)";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="0"+String.format("%19.2f",principalToCent);
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                
-                    while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
-                        amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
-                        lineOfText=i+String.format("%19.2f",amountOfInvestment);
-                        System.out.println(lineOfText);
-                        buffWr.write(lineOfText, 0, lineOfText.length());
-                        buffWr.newLine();
-                        i++;
-                    }
-                    
-                    buffWr.close();
-                    outputFile.close();
-                }
+                lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
             
-                catch(IOException e){
-                    System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
+                lineOfText="Year   Investment Value ($, rounded to nearest cent)";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="0"+String.format("%18.2f",principalToCent);
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
+                    amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
+                    lineOfText=i+String.format("%18.2f",amountOfInvestment);
+                    System.out.println(lineOfText);
+                    buffWr.write(lineOfText, 0, lineOfText.length());
+                    buffWr.newLine();
+                    i++;
                 }
+                
+                buffWr.close();
+                outputFile.close();
             }
+        
+            catch(IOException e){
+                System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
+            }
+        }
+        
+        else if(compoundingType==3){
+            numOfInterestEarned=4;
+            try{
+                FileWriter outputFile=new FileWriter("investgrowth.txt");
+                BufferedWriter buffWr=new BufferedWriter(outputFile);
+                String lineOfText = null;
+                
+                System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
+                
+                lineOfText="REPORT:\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
             
-            else{
-                numOfInterestEarned=12;
-                try{
-                    FileWriter outputFile=new FileWriter("investgrowth.txt");
-                    BufferedWriter buffWr=new BufferedWriter(outputFile);
-                    String lineOfText = null;
-                    
-                    System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
-                    
-                    lineOfText="REPORT:\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+                lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
                 
-                    lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The number of compounding periods per year you have specified is 12 (monthly compounding).\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
+                lineOfText="The number of compounding periods per year you have specified is 4 (quarterly compounding).\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
                 
-                    lineOfText="Year   Investment Value ($, rounded to nearest cent)";
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                    
-                    lineOfText="0"+String.format("%20.2f",principalToCent);
-                    System.out.println(lineOfText);
-                    buffWr.write(lineOfText, 0, lineOfText.length());
-                    buffWr.newLine();
-                
-                    while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
-                        amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
-                        lineOfText=i+String.format("%20.2f",amountOfInvestment);
-                        System.out.println(lineOfText);
-                        buffWr.write(lineOfText, 0, lineOfText.length());
-                        buffWr.newLine();
-                        i++;
-                    }
-                    
-                    buffWr.close();
-                    outputFile.close();
-                }
+                lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
             
-                catch(IOException e){
-                    System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
+                lineOfText="Year   Investment Value ($, rounded to nearest cent)";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="0"+String.format("%19.2f",principalToCent);
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
+                    amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
+                    lineOfText=i+String.format("%19.2f",amountOfInvestment);
+                    System.out.println(lineOfText);
+                    buffWr.write(lineOfText, 0, lineOfText.length());
+                    buffWr.newLine();
+                    i++;
                 }
-            }        
+                
+                buffWr.close();
+                outputFile.close();
+            }
+        
+            catch(IOException e){
+                System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
+            }
+        }
+        
+        else{
+            numOfInterestEarned=12;
+            try{
+                FileWriter outputFile=new FileWriter("investgrowth.txt");
+                BufferedWriter buffWr=new BufferedWriter(outputFile);
+                String lineOfText = null;
+                
+                System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
+                
+                lineOfText="REPORT:\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                lineOfText="Your target value is $ "+targetValueToCent+". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="The number of compounding periods per year you have specified is 12 (monthly compounding).\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="The following table will show the number of years and your investment value at the end of each year until it equals or surpasses the target value.\n";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                lineOfText="Year   Investment Value ($, rounded to nearest cent)";
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+                
+                lineOfText="0"+String.format("%20.2f",principalToCent);
+                System.out.println(lineOfText);
+                buffWr.write(lineOfText, 0, lineOfText.length());
+                buffWr.newLine();
+            
+                while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
+                    amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
+                    lineOfText=i+String.format("%20.2f",amountOfInvestment);
+                    System.out.println(lineOfText);
+                    buffWr.write(lineOfText, 0, lineOfText.length());
+                    buffWr.newLine();
+                    i++;
+                }
+                
+                buffWr.close();
+                outputFile.close();
+            }
+        
+            catch(IOException e){
+                System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
+            }
+        }        
+    }
+
+    public double getTarget() {
+        numNotEntered=true;                                                            //Reset the boolean value to ensure the loop run properly.
+        double targetValue = 0.0;
+        //Continuously prompt the user to enter a number, until a number in correct form is actaully entered.
+        do{
+            //Contains the code (parseDouble()) that could throw an exception as the program is running
+            try{
+                System.out.print("Enter your target value ($, non-negative) (will round to cent while calculating): ");
+                inputStr = theScanner.nextLine();
+                targetValue = Double.parseDouble(inputStr);
+                numNotEntered=false;
+            }
+            //Catches and deals with the exception that could be thrown.
+            catch(NumberFormatException e){
+                System.out.println("\nYOU NEED TO ENTER A NUMBER.\n");
+            }
+        }
+        while(numNotEntered||targetValue<0);
+        double targetValueToCent = Math.round(targetValue*100.0)/100.0;                  //Round the target value the user entered to cent.
+        System.out.print("\n");
+        return targetValueToCent;
     }
 
     public int getYears() {
@@ -378,7 +385,6 @@ public class Calc extends Launch{
         }
         while (numNotEntered||numNotInt||yearNumber<1||yearNumber>20);
         System.out.print("\n");
-
         return yearNumber;
     }
 }
