@@ -73,10 +73,7 @@ public class Calc extends Launch{
         try{
             compoundingTypeHelper(compoundingType);
         
-            lineOfText="Year   Investment Value ($, rounded to nearest cent)";
-            System.out.println(lineOfText);
-            buffWr.write(lineOfText, 0, lineOfText.length());
-            buffWr.newLine();
+            printTitle();
             
             lineOfText="0"+String.format("%19.2f",investmentArr[0]);
             System.out.println(lineOfText);
@@ -84,8 +81,8 @@ public class Calc extends Launch{
             buffWr.newLine();
         
             for(int i=1; i<=yearNumber; i++){
-                investmentArr[i]=principalToCent*Math.pow((1+annualInterestRate/compoundPeriod),i*compoundPeriod);
-                lineOfText=i+String.format("%19.2f",investmentArr[i]);
+                investmentArr[i] = principalToCent*Math.pow((1+annualInterestRate/compoundPeriod),i*compoundPeriod);
+                lineOfText = i+String.format("%19.2f",investmentArr[i]);
                 System.out.println(lineOfText);
                 buffWr.write(lineOfText, 0, lineOfText.length());
                 buffWr.newLine();
@@ -168,7 +165,6 @@ public class Calc extends Launch{
     private void reachTargetHelper(int numOfInterestEarned, double targetValueToCent, String compoundingType) {
         double amountOfInvestment = 0.0;                     //Initialize this variable for storing each year's investment value later on.
         int i = 1;
-
         try{
             lineOfText="Your target value is $ " + targetValueToCent + ". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
             System.out.println(lineOfText);
@@ -182,10 +178,7 @@ public class Calc extends Launch{
             buffWr.write(lineOfText, 0, lineOfText.length());
             buffWr.newLine();
         
-            lineOfText="Year   Investment Value ($, rounded to nearest cent)";
-            System.out.println(lineOfText);
-            buffWr.write(lineOfText, 0, lineOfText.length());
-            buffWr.newLine();
+            printTitle();
             
             lineOfText="0"+String.format("%19.2f",principalToCent);
             System.out.println(lineOfText);
@@ -193,7 +186,7 @@ public class Calc extends Launch{
             buffWr.newLine();
         
             while(amountOfInvestment != targetValueToCent && amountOfInvestment < targetValueToCent){
-                amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned),i*numOfInterestEarned);
+                amountOfInvestment= principalToCent*Math.pow((1+annualInterestRate/numOfInterestEarned), i*numOfInterestEarned);
                 lineOfText=i+String.format("%19.2f",amountOfInvestment);
                 System.out.println(lineOfText);
                 buffWr.write(lineOfText, 0, lineOfText.length());
@@ -217,5 +210,16 @@ public class Calc extends Launch{
         } catch (IOException e) {
             System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
         }  
+    }
+
+    private void printTitle() {
+        lineOfText="Year   Investment Value ($, rounded to nearest cent)";
+        System.out.println(lineOfText);
+        try {
+            buffWr.write(lineOfText, 0, lineOfText.length());
+            buffWr.newLine();
+        } catch (IOException e) {
+            System.out.println("IO problem - investgrowth.txt could not be created, or written to.");
+        }
     }
 }
