@@ -1,9 +1,19 @@
 REPORT:
 
-You have invested $ 2.0 with an annual interest rate of 3.0% for 2 year(s).
+You have invested $ 1000.0 with an annual interest rate of 1.0% for 12 year(s).
 
-The number of compounding periods per year you have specified is 12 (monthly compounding).
+The number of compounding periods per year you have specified is 2 (semi-annual compounding).
 Year   Investment Value ($, rounded to nearest cent)
-0             2.00
-1             2.06
-2             2.12
+0            1000.00
+1            1010.02
+2            1020.15
+3            1030.38
+4            1040.71
+5            1051.14
+6            1061.68
+7            1072.32
+8            1083.07
+9            1093.93
+10            1104.90
+11            1115.97
+12            1127.16

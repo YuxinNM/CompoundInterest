@@ -12,14 +12,8 @@ public class Calc extends Launch{
         try {
             outputFile = new FileWriter("investgrowth.txt");
             buffWr = new BufferedWriter(outputFile);
-           
-            System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
-            lineOfText="REPORT:\n";
-            System.out.println(lineOfText);
-            buffWr.write(lineOfText, 0, lineOfText.length());
-            buffWr.newLine();
         } catch (IOException e) {
-            System.out.println("IO problem - investgrowth.txt could not be created.");
+            System.out.println("IO problem - investgrowth.txt could not be created.1");
         }
         
         // System.out.println("reached for debugging");
@@ -33,10 +27,10 @@ public class Calc extends Launch{
         }    
 
         try {
-            outputFile.close();
             buffWr.close();
+            outputFile.close();
         } catch (IOException e) {
-            System.out.println("IO problem - investgrowth.txt could not be created.");
+            System.out.println("IO problem - investgrowth.txt could not be created.2");
         }
     }
 
@@ -48,6 +42,11 @@ public class Calc extends Launch{
         investmentArr[0] = principalToCent;
         
         try {
+            System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
+            lineOfText="REPORT:\n";
+            System.out.println(lineOfText);
+            buffWr.write(lineOfText, 0, lineOfText.length());
+            buffWr.newLine();
             lineOfText="You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"% for "+yearNumber+" year(s).\n";
             System.out.println(lineOfText);
             buffWr.write(lineOfText, 0, lineOfText.length());
@@ -166,6 +165,12 @@ public class Calc extends Launch{
         double amountOfInvestment = 0.0;                     //Initialize this variable for storing each year's investment value later on.
         int i = 1;
         try{
+            System.out.println("THE FOLLOWING LINES WILL BE WRITTEN TO investgrowth.txt.\n");
+            lineOfText="REPORT:\n";
+            System.out.println(lineOfText);
+            buffWr.write(lineOfText, 0, lineOfText.length());
+            buffWr.newLine();
+            
             lineOfText="Your target value is $ " + targetValueToCent + ". You have invested $ "+principalToCent+" with an annual interest rate of "+annualInterestPercent+"%.\n";
             System.out.println(lineOfText);
             buffWr.write(lineOfText, 0, lineOfText.length());
