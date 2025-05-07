@@ -3,15 +3,17 @@ package ui;
 import java.util.Scanner;
 
 public class Launch {
-    private String inputStr;
-    private Scanner theScanner;
+    protected String inputStr;
+    protected Scanner theScanner;
+    protected int compoundingType;
+    protected double principalToCent;
+    protected double annualInterestRate;
+    protected int choice;
+    protected double annualInterestPercent;
 
-    private int choice;
-    private boolean numNotEntered;
-    private boolean numNotInt;
-    private int compoundingType;
-    private double principalToCent;
-    private double annualInterestRate;
+    protected boolean numNotEntered;
+    protected boolean numNotInt;
+   
 
     public Launch() {
         theScanner = new Scanner(System.in);
@@ -26,7 +28,7 @@ public class Launch {
         getValues();
         getCompoundingType();
 
-        new Calc(choice, compoundingType, principalToCent, annualInterestRate); 
+        new Calc(); 
     }
 
     private void getChoice() {
@@ -80,7 +82,7 @@ public class Launch {
         
         
         //Prompt the user to enter the annual interest rate.
-        double annualInterestPercent = 0.0;
+        annualInterestPercent = 0.0;
         numNotEntered = true;                                                             //Reset the boolean value to ensure the loop run properly.
         //Continuously prompt the user to enter a number, until a number in correct form is actaully entered.
         do{
